@@ -44,27 +44,50 @@ class FestivalController {
                 );
         }
     }
+    async getFestivalById(req, res) {
+        // El id plato viene en la ruta /api/platos/:idplato
+        const idFestival = req.params.idFestival;
+        try {
+          const fila = await Festival.findByPk(idFestival);
+          if (fila) {
+            // Si se ha recuprado un plato
+            res.json(Respuesta.exito(fila, "Festival recuperado"));
+          } else {
+            res.status(404).json(Respuesta.error(null, "Festival no encontrado"));
+          }
+        } catch (err) {
+          logMensaje("Error :" + err);
+          res
+            .status(500)
+            .json(
+              Respuesta.error(
+                null,
+                `Error al recuperar los datos: ${req.originalUrl}`
+              )
+            );
+        }
+      }   
 
 //MODIFICAR FESTIVAL
     async updateFestival(req, res) {
         const festival = req.body; // Recuperamos datos para actualizar
-        const idfestival = req.params.idfestival; // dato de la ruta
+        const idFestival = req.params.idFestival; // dato de la ruta
 
         // Petición errónea, no coincide el id del plato de la ruta con el del objeto a actualizar
-        if (idfestival != festival.idfestival) {
+        if (idFestival != festival.idFestival) {
             return res
                 .status(400)
-                .json(Respuesta.error(null, "El id del plato no coincide"));
+                .json(Respuesta.error(null, "El id del festival no coincide"));
         }
 
         try {
-            const numFilas = await Festival.update({ ...festival }, { where: { idfestival } });
+            const numFilas = await Festival.update({ ...festival }, { where: { idFestival } });
 
             if (numFilas == 0) {
                 // No se ha encontrado lo que se quería actualizar o no hay nada que cambiar
                 res
                     .status(404)
-                    .json(Respuesta.error(null, "No encontrado o no modificado: " + idfestival));
+                    .json(Respuesta.error(null, "No encontrado o no modificado: " + idFestival));
             } else {
                 // Al dar status 204 no se devuelva nada
                 // res.status(204).json(Respuesta.exito(null, "Festival actualizado"));
@@ -78,6 +101,30 @@ class FestivalController {
                     Respuesta.error(
                         null,
                         `Error al actualizar los datos: ${req.originalUrl}`
+                    )
+                );
+        }
+    }
+
+    //ELIMINAR FESTIVAL
+    async deleteFestival(req, res) {
+        const idFestival = req.params.idFestival;
+        try {
+            const numFilas = await Festival.destroy({ where: { idFestival:idFestival, }, });
+
+            if (numFilas == 0) {
+                res.status(404).json(Respuesta.error(null, "Festival no encontrado: " + idFestival));
+            } else {
+                res.status(204).send();
+            }
+        } catch (err) {
+            logMensaje("Error :" + err);
+            res
+                .status(500)
+                .json(
+                    Respuesta.error(
+                        null,
+                        `Error al eliminar los datos: ${req.originalUrl}`
                     )
                 );
         }

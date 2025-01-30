@@ -4,11 +4,7 @@ const router = express.Router();
 const festivalController = require('../controllers/festivalController');
 router.post('/', festivalController.createFestival);
 router.get('/', festivalController.getAllFestival);
-router.put('/:idfestival', festivalController.updateFestival);
-/*
-
-router.get('/:idplato', platoController.getPlatoById);
-
-router.delete('/:idplato', platoController.deletePlato);
-*/
+router.put('/:idFestival', festivalController.updateFestival);
+router.get('/:idFestival', festivalController.getFestivalById);
+router.delete('/:idFestival', festivalController.deleteFestival);
 module.exports = router;
