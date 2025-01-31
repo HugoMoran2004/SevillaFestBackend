@@ -44,6 +44,32 @@ class FestivalController {
                 );
         }
     }
+    //OBTENER ACTIVIDAD POR ID FESTIVAL
+    async getActividadesByFestivalId(req, res) {
+        const idFestival = req.params.idFestival;  // Extraemos el idFestival de los parámetros de la URL
+        try {
+            // Usamos el modelo de Actividad y lo relacionamos con el idFestival
+            const actividades = await Actividad.findAll({
+                where: { idFestival: idFestival }  // Filtramos las actividades por el festivalId
+            });
+    
+            if (actividades.length > 0) {
+                res.json(Respuesta.exito(actividades, "Actividades recuperadas correctamente"));
+            } else {
+                res.status(404).json(Respuesta.error(null, "No se encontraron actividades para este festival"));
+            }
+        } catch (err) {
+            logMensaje("Error :" + err);
+            res.status(500).json(
+                Respuesta.error(null, `Error al recuperar las actividades del festival: ${req.originalUrl}`)
+            );
+        }
+    }
+
+
+
+
+    //OBTENER UN FESTIVAL POR ID
     async getFestivalById(req, res) {
         // El id plato viene en la ruta /api/platos/:idplato
         const idFestival = req.params.idFestival;
@@ -73,7 +99,7 @@ class FestivalController {
         const festival = req.body; // Recuperamos datos para actualizar
         const idFestival = req.params.idFestival; // dato de la ruta
 
-        // Petición errónea, no coincide el id del plato de la ruta con el del objeto a actualizar
+        // Petición errónea, no coincide el id del festival de la ruta con el del objeto a actualizar
         if (idFestival != festival.idFestival) {
             return res
                 .status(400)

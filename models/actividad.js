@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(100),
       allowNull: false
     },
+    imagenActividad:{
+      type: DataTypes.STRING(10000),
+      allowNull: false
+    },
     idFestival: {
       type: DataTypes.INTEGER,
       allowNull: false,
