@@ -7,7 +7,7 @@ GET http://localhost:3000/festival/platos
 
 ###
 
-POST http://localhost:3000/api/platos
+POST http://localhost:3000/api/festival
 Content-Type: application/json
 
 {

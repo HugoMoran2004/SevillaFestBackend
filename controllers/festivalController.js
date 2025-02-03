@@ -10,6 +10,7 @@ const sequelize = require("../config/sequelize.js");
 const models = initModels(sequelize);
 // Recuperar el modelo festival
 const Festival = models.festival;
+const Actividad = models.actividad;
 
 class FestivalController {
     async createFestival(req, res) {
@@ -50,8 +51,14 @@ class FestivalController {
         try {
             // Usamos el modelo de Actividad y lo relacionamos con el idFestival
             const actividades = await Actividad.findAll({
-                where: { idFestival: idFestival }  // Filtramos las actividades por el festivalId
-            });
+                include: [
+                    {
+                      model: Festival,
+                      as: "idFestival_festival",
+                    },
+                  ],
+                  where: { idFestival: idFestival },
+                });
     
             if (actividades.length > 0) {
                 res.json(Respuesta.exito(actividades, "Actividades recuperadas correctamente"));
