@@ -6,13 +6,13 @@ function initModels(sequelize) {
   var actividad = _actividad(sequelize, DataTypes);
   var festival = _festival(sequelize, DataTypes);
 
-  actividad.belongsTo(festival, { as: "idFestival_festival", foreignKey: "idFestival"});
-  festival.hasMany(actividad, { as: "actividad", foreignKey: "idFestival"});
+          actividad.belongsTo(festival, { as: "idFestival_festival", foreignKey: "idFestival"});
+          festival.hasMany(actividad, { as: "actividad", foreignKey: "idFestival"});
 
-  return {
-    actividad,
-    festival,
-  };
+          return {
+            actividad,
+            festival,
+          };
 }
 module.exports = initModels;
 module.exports.initModels = initModels;

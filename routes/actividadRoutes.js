@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const actividadController = require('../controllers/actividadController');
 router.post('/', actividadController.createActividad);
+router.get('/actividad/:nombre',actividadController.getActividadesByNombre);
 /*
 router.get('/', platoController.getAllPlato);
 router.get('/:idplato', platoController.getPlatoById);
