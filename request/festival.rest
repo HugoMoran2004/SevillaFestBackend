@@ -17,14 +17,16 @@ Content-Type: application/json
 }
 
 ###
-# Borrado de un plato que no existe (404)
-DELETE http://localhost:3000/api/platos/99
+
+GET http://localhost:3000/api/actividad/sss 
+
+
 
 ###
 # Borrado de un plato que existe (204)
 DELETE http://localhost:3000/api/platos/34
 
-### Actualizacion de un plato
+#DELETE## Actualizacion de un plato
 PUT  http://localhost:3000/api/platos/45
 Content-Type: application/json
 

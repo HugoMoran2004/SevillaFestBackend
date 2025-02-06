@@ -1,6 +1,7 @@
 // Importar libreria para respuestas
 const Respuesta = require("../utils/respuesta");
 const { logMensaje } = require("../utils/logger.js");
+const { Op } = require('sequelize');
 // Recuperar función de inicialización de modelos
 const initModels = require("../models/init-models.js").initModels;
 // Crear la instancia de sequelize con la conexión a la base de datos
@@ -34,11 +35,12 @@ class ActividadController{
 
     async getActividadesByNombre(req, res) {
         const nombre = req.params.nombre;  // Extraemos el idFestival de los parámetros de la URL
-        console.log(nombre);
+        console.log("Nombre:",nombre);
         try {
             // Usamos el modelo de Actividad y lo relacionamos con el idFestival
             const actividades = await Actividad.findAll({
                 where: { nombre: nombre },
+               
                 include: [
                     {
                       model: Festival,
@@ -53,10 +55,8 @@ class ActividadController{
                     error: "No se han encontrado actividades con el nombre indicado"
                 });
             } else{
-                return res.status(200).json({
-                    datos: actividades,
-                    mensaje: "Datos de actividades recuperados"
-                });
+                return res.status(200).json(Respuesta.exito(actividades, "Datos de actividades recuperados"));
+                   
             }
 /*
             res.json({
