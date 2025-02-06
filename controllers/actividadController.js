@@ -58,15 +58,6 @@ class ActividadController{
                 return res.status(200).json(Respuesta.exito(actividades, "Datos de actividades recuperados"));
                    
             }
-/*
-            res.json({
-                datos: actividades.map(actividad => ({
-                    nombre: actividad.nombre,
-                    descripcion: actividad.descripcion,
-                    festival: actividad.idFestival_festival.nombre // Nombre del festival asociado
-                })),
-                mensaje: 'Actividades recuperadas correctamente'
-            });*/
 
         } catch (err) {
             console.error("Error:", err);
@@ -78,53 +69,29 @@ class ActividadController{
     }
 
 }
-
-
-
-
-
-
-
-/*
-    async getActividadesByCiudad(req, res) {
-        const ciudad = req.params.ciudad;  // Extraemos el idFestival de los parámetros de la URL
+async deleteActividad(req, res) {
+        const idActividad = req.params.idActividad;
         try {
-            // Usamos el modelo de Actividad y lo relacionamos con el idFestival
-            const festivales = await Festival.findAll({
-                where: { ciudad: ciudad }
-            });
+            const numFilas = await Actividad.destroy({ where: { idActividad:idActividad, }, });
 
-            if(festivales.length === 0){
-                return res.status(404).json({
-                    error: "No se han encontrado festivales en la ciudad indicada"
-                })
+            if (numFilas == 0) {
+                res.status(404).json(Respuesta.error(null, "Actividad no encontrado: " + idActividad));
+            } else {
+                res.status(204).send();
             }
-
-            const festivalesConActividades = [];
-
-            for (const festival of festivales) {
-                const actividades = await Actividad.findAll({
-                    where: { idFestival: festival.idFestival }
-                });
-
-                festivalesConActividades.push({
-                    nombrefestival: festival.nombre,
-                    actividades: actividades
-                });
-            }
-            return res.status(200).json({
-                datos: festivalesConActividades,
-                mensaje: "Datos de actividades recuperados"
-            })
         } catch (err) {
-            // Handle errors during the model call
-            console.error(err);
-            return res.status(500).json({
-                error: "Error al recuperar los datos de las actividades"
-        });
+            logMensaje("Error :" + err);
+            res
+                .status(500)
+                .json(
+                    Respuesta.error(
+                        null,
+                        `Error al eliminar los datos: ${req.originalUrl}`
+                    )
+                );
+        }
     }
 
-}*/
     
 }
 module.exports = new ActividadController();

@@ -6,6 +6,7 @@ const actividadController = require('../controllers/actividadController');
 // Rutas para las actividades
 router.post('/', actividadController.createActividad);
 router.get('/:nombre',actividadController.getActividadesByNombre);
+router.delete('/:idActividad', actividadController.deleteActividad);
 /*
 router.get('/', platoController.getAllPlato);
 router.get('/:idplato', platoController.getPlatoById);
