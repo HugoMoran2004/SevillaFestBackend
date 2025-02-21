@@ -1,5 +1,7 @@
 // Importar libreria para manejo de ficheros de configuración
-require('dotenv').config();
+require("dotenv").config({
+  path : `.env.${process.env.NODE_ENV || "development"}`
+});
 // Importar fichero de configuración con variables de entorno
 const config = require('./config/config');
 // Importar librería express --> web server
@@ -17,7 +19,7 @@ const app = express();
 // Configurar middleware para analizar JSON en las solicitudes
 app.use(express.json());
 // Configurar CORS para admitir cualquier origen
-app.use(cors());
+//app.use(cors());
 
 // Configurar rutas de la API Rest
 app.use("/api/festival", festivalRoutes);
@@ -33,6 +35,12 @@ app.get("*", (req, res) => {
 });
 
 // Iniciar el servidor
-app.listen(config.port, () => {
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(config.port, () => {
   console.log(`Servidor escuchando en el puerto ${config.port}`);
-});
+  });
+  }
+
+  module.exports = app; // Exportar el módulo app para ser usado en testeo
+
